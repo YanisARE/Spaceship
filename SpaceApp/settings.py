@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'orbiteur',
     'pays',
     'entreprise',
-    'module'
+    'module',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
