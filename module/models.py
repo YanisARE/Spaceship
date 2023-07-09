@@ -10,4 +10,4 @@ class Module(models.Model):
     entreprise = models.ForeignKey(Entreprise, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.fonction
+        return self.nom
