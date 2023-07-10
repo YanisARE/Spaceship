@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'pays',
     'entreprise',
     'module',
-    'rest_framework'
+    'rest_framework',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [

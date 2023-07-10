@@ -2,4 +2,9 @@ from django.contrib import admin
 
 from .models import Pays
 
-admin.site.register(Pays)
+
+class PaysAdmin(admin.ModelAdmin):
+    list_display = ["nom"]
+
+
+admin.site.register(Pays, PaysAdmin)
