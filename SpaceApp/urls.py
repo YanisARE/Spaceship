@@ -1,5 +1,7 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
+
 from orbiteur.views import OrbiteurViewSet
 from module.views import ModuleViewSet
 from pays.views import PaysViewSet
@@ -36,4 +38,8 @@ urlpatterns = [
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'), # Token obtain pair view
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # Token refresh view
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),  # allow API users to verify HMAC-signed
+    # tokens without having access to your signing key
 ]
