@@ -1,11 +1,13 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import authentication, viewsets, mixins, permissions
+from rest_framework import viewsets, mixins
 from rest_framework.response import Response
 
 from .filters import OrbiteurFilter
 from .models import Orbiteur
 from .serializers import OrbiteurSerializer
 import requests
+
+
 # from rest_framework.decorators import api_view, permission_classes
 # from rest_framework.permissions import IsAuthenticated
 
@@ -16,8 +18,9 @@ class OrbiteurViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.Cre
     serializer_class = OrbiteurSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = OrbiteurFilter
-    authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]  # indique que ce contenue est protégé
+
+    # authentication_classes = [authentication.TokenAuthentication]
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]  # indique que ce contenue est protégé
 
     # @api_view(['GET'])
     # @permission_classes([IsAuthenticated])
@@ -58,7 +61,8 @@ class OrbiteurViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.Cre
         try:
             # Make a request to the N2YO API to get the satellite data
             satellite_response = requests.get(
-                f'https://api.n2yo.com/rest/v1/satellite/positions/{instance.norad_id}/41.702/-76.014/0/2?apiKey={api_key}')
+                f'https://api.n2yo.com/rest/v1/satellite/positions/{instance.norad_id}/41.702/-76.014/0/2?apiKey='
+                f'{api_key}')
             satellite_response.raise_for_status()
             satellite_data = satellite_response.json()
 

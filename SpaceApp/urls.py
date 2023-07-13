@@ -1,6 +1,6 @@
+from django.shortcuts import redirect
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 from orbiteur.views import OrbiteurViewSet
 from module.views import ModuleViewSet
@@ -25,21 +25,21 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
-router = DefaultRouter()
-router.register(r'pays', PaysViewSet)
-router.register(r'orbiteur', OrbiteurViewSet)  # J'ai changé, car il y avait un s en trop
-router.register(r'module', ModuleViewSet)  # Pareil
-router.register(r'entreprise', EntrepriseViewSet)  # Pareil
+
+# Définit une vue de redirection pour l'URL racine ("/") pour rediriger vers l'application "orbiteur"
+def redirect_to_orbiteur(request):
+    return redirect('orbiteur')  # Remplace "orbiteur-list" par le nom d'URL approprié pour l'application
+    # "orbiteur"
 
 urlpatterns = [
-    path('', include(router.urls)),
     path('admin/', admin.site.urls),
     # path('orbiteur/update_all_coordinates/', OrbiteurViewSet.as_view({'post': 'update_all_coordinates'})),
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'), # Token obtain pair view
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # Token refresh view
-    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),  # allow API users to verify HMAC-signed
-    # tokens without having access to your signing key
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'), # generate interactive API documentation
+    path('api/', include('orbiteur.urls')),
+    path('api/', include('module.urls')),
+    path('api/', include('entreprise.urls')),
+    path('api/', include('pays.urls')),
+    path('', redirect_to_orbiteur),  # line to redirect the root URL ("/") to the "orbiteur" app
 ]

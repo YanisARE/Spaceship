@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: spacedb
+      POSTGRES_USER: yanis
+      POSTGRES_PASSWORD: inserm
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: /wait-for-it.sh db:5432 -- python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db

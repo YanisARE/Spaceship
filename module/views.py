@@ -8,8 +8,6 @@ from module.models import Module
 from module.serializers import ModuleSerializer
 
 
-
-
 class ModuleViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin,
                     mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
     queryset = Module.objects.all()
